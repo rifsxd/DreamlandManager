@@ -34,7 +34,7 @@ public final class Dreamland {
     private static final String SYSTEM_LIB_DIR = "/system/lib/";
     private static final String SYSTEM_LIB64_DIR = "/system/lib64/";
     private static final String CORE_LIB_NAME = "libriru_dreamland.so";
-    public static final File CORE_JAR_FILE = new File("/system/framework/dreamland.jar");
+    public static final File CORE_JAR_FILE = new File("/data/misc/dreamland/dreamland.jar");
     private static final String MANAGER_PACKAGE_NAME = BuildConfig.APPLICATION_ID;
     private static String versionName;
     private static int version = -1;
