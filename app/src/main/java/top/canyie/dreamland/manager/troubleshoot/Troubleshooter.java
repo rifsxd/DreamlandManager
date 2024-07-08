@@ -97,7 +97,7 @@ public class Troubleshooter {
     }
 
     private static void detectDreamland(List<AlertList> problems) {
-        final String JAR_PATH = "/system/framework/dreamland.jar";
+        final String JAR_PATH = "/data/misc/dreamland/dreamland.jar";
         if (!new File(JAR_PATH).exists())
             problems.add(AlertList.CORE_JAR_MISSING);
         final String CONFIG_DIR = "/data/misc/dreamland";
