@@ -1,13 +1,18 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    Properties properties = new Properties()
+    InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream()
+    properties.load(inputStream)
+    inputStream.close()
     
 
     compileSdkVersion 33
     buildToolsVersion "33.0.2"
     defaultConfig {
         applicationId "top.canyie.dreamland.manager"
-        minSdkVersion 21
+        minSdkVersion 23
         // noinspection ExpiredTargetSdkVersion
         targetSdkVersion 29
         versionCode 8
