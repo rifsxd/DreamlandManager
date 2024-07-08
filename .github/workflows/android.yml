@@ -25,3 +25,40 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+
+    - name: Build debug APK
+      run: ./gradlew assembleDebug --stacktrace
+
+    - name: Get App Version Name
+      id: version
+      run: echo "::set-output name=app_version::$(grep versionName app/build.gradle | sed -n 's/.*versionName \"\([0-9.]*\)\".*/\1/p')"
+
+    - name: Rename APK
+      run: mv app/build/outputs/apk/debug/app-debug.apk Dreamland-Manager-${{ steps.version.outputs.app_version }}.apk
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: Dreamland Manager
+        path: Dreamland-Manager-${{ steps.version.outputs.app_version }}.apk
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      with:
+        files: Dreamland-Manager-${{ steps.version.outputs.app_version }}.apk
+        tag_name: ${{ steps.version.outputs.app_version }}
+        release_name: ${{ steps.version.outputs.app_version }}
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload Release Assets
+      run: |
+        release_id=${{ steps.create_release.outputs.id }}
+        asset_url=$(curl -X POST \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Content-Type: application/octet-stream" \
+          --data-binary "@Dreamland-Manager-${{ steps.version.outputs.app_version }}.apk" \
+          "https://uploads.github.com/repos/${{ github.repository }}/releases/$release_id/assets?name=Dreamland-Manager-${{ steps.version.outputs.app_version }}.apk")
+        echo "Uploaded asset: $asset_url"
